@@ -1,7 +1,6 @@
 #!/bin/bash
 # Sorteia um nome aleatório para finalidades diversas.
 
-
 #Array de nomes formato nº 1
 #nome=( "Paulo" "Maria" "João" "Fernando" "Ana")
 
