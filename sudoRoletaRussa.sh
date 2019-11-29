@@ -1,6 +1,7 @@
 #!/bin/bash
 # Roleta russa do bash. Brincadeira saudável para
 # fazer nos servers de produção.
+clear;
 
 if [ $[ $RANDOM % 6 ] == 0 ]; then
      cat << 'EOF'
