@@ -9,10 +9,7 @@ url="http://www.debit.com.br/consulta30.php?indice"
 periodo=$*
 linha="-------------------------"
 
-pacote1=$(dpkg --get-selections | grep "lynx" )
-pacote2=$(dpkg --get-selections | grep "pv" )
-
-if [[ -n "$pacote1" ]] && [[ -n "$pacote2" ]]; then
+test $(which lynx) || { echo -e "$SCRIPT: pacote 'lynx' requerido: sudo apt-get install -y lynx";  exit 1; }  && test $(which pv) || { echo -e "$SCRIPT: pacote 'pv' requerido: sudo apt-get install -y pv";  exit 1; }
 clear;
 echo "Atualizações do mês/ano: $periodo"
 echo "*assp corresponde ao indice TJSP."
@@ -56,10 +53,3 @@ function atualizarindices_anuais() {
 }
 
 atualizarindices_mensais;atualizarindices_anuais ${@}
-
-
-else echo "Os pacotes necessários não estão instalados"
-     echo "por favor use: apt-get install -y lynx pv"
-
-
-fi
