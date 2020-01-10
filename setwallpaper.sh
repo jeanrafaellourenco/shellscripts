@@ -1,7 +1,7 @@
 #!/bin/bash
 ###################################################################
-#Script Name	  : setwallpaper.sh
-#Description	  : Script para trocar o wallpaper segunda-feira ou quarta-feira.
+#Script Name	: setwallpaper.sh
+#Description	: Script para trocar o wallpaper segunda-feira ou quarta-feira.
 #Uso            : bash setwallpaper.sh
 #Date           : 09/01/2020
 #Author       	: @jeanrafaellourenco
