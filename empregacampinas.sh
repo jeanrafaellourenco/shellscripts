@@ -1,3 +1,4 @@
+#!/bin/bash
 ###################################################################
 # Script Name: empregacampinas.sh
 # Description: Script de busca de vagas de emprego no site \
