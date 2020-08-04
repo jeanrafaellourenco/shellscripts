@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# baseado em: https://askubuntu.com/questions/790601/accidentally-deleted-var-log-syslog
 function checarSyslog() {
 	if [[ -e "/var/log/syslog" ]]; then
 		echo -e "$(ls -lha /var/log/syslog | awk '{ print $6,$7,$8,$5 }')"
