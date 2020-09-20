@@ -12,11 +12,12 @@
 
 function checkNewFiles() {
         # remova o parâmetro -r para deixar de monitorar recursivamente
-        inotifywait -m -r -e create -e moved_to -e delete /home/chaves/ |
+        inotifywait -m -e create -e moved_to -e delete -e modify . |
                 while read dir action file; do
                         # Descomente o código abaixo para ocultar a extensão do arquivo
                         # file=$(echo "$file" | cut -f 1 -d '.')
                         [ "$action" == "CREATE" ] && echo -e "Novo(s) arquivo(s) criado: '$file' no diretório '$dir' via '$action'"
+                        [ "$action" == "MODIFY" ] && echo -e "Arquivo(s) modificado(s): '$file' no diretório '$dir' via '$action'"
                         [ "$action" == "DELETE" ] && echo -e "Arquivo(s) removido(s): '$file' no diretório '$dir' via '$action'"
                 done
 }
