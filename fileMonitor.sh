@@ -9,6 +9,7 @@
 #Encode:        UTF8
 #Ref:           https://unix.stackexchange.com/questions/24952/script-to-monitor-folder-for-new-files
 ##################################################################
+[[ ! $(which inotifywait 2>/dev/null) ]] && echo -e "O programa 'inotifywait' não está instalado no momento. Você pode instalá-lo digitando: \nsudo apt install inotify-tools -y" && exit 1
 
 function checkNewFiles() {
         # remova o parâmetro -r para deixar de monitorar recursivamente
