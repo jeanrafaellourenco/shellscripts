@@ -13,7 +13,7 @@
 
 function checkNewFiles() {
         # remova o parâmetro -r para deixar de monitorar recursivamente
-        inotifywait -m -e create -e moved_to -e delete -e modify $(pwd) |
+        inotifywait -m -r -e create -e moved_to -e delete -e modify $(pwd) |
                 while read dir action file; do
                         # Descomente o código abaixo para ocultar a extensão do arquivo
                         # file=$(echo "$file" | cut -f 1 -d '.')
