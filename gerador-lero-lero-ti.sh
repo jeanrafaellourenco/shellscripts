@@ -140,7 +140,7 @@ function lerolero() {
     mensagem=$(echo -e  "${tab0[$sorte0]}${tab1[$sorte1]}${tab2[$sorte2]}${tab3[$sorte3]}")
     # debug
     # echo -e  "$sorte0 $sorte1 $sorte2 $sorte3"
-    echo $mensagem
+    echo -e "$mensagem\n"
 }
 
 # gera 5 parágrafos de lorota.
