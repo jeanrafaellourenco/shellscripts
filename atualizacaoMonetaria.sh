@@ -5,7 +5,8 @@
 # ./atualizacaoMonetaria.sh 2019
 
 
-url="http://www.debit.com.br/consulta30.php?indice"
+#url="http://www.debit.com.br/consulta30.php?indice"
+url="https://www.debit.com.br/tabelas/tabela-completa.php?indice"
 periodo=$*
 linha="-------------------------"
 
@@ -16,7 +17,7 @@ echo "*assp corresponde ao indice TJSP."
 echo "";
 
 function atualizarindices_mensais() {
-    indices_array=(inpc igpm aasp tjmg tjrj poupanca)
+    indices_array=(inpc igpm aasp tjmg tjrj poupanca tjdf tjes)
 
     for indice in "${indices_array[@]}"
     do
@@ -30,26 +31,4 @@ function atualizarindices_mensais() {
     done
 }
 
-# Indices como o tjdf e tjes só saem o indice anual portanto eu configuro pra pegar pelo menos dois anos
-# sendo o ano atual e o ano anterior.
-
-function atualizarindices_anuais() {
-    indices_array=(tjdf tjes)
-
-    echo ""
-    echo "Atualizações anual (2017/2018)."
-
-    for indice in "${indices_array[@]}"
-    do
-    echo "$linha";
-    echo "Atualizando $indice....." | pv -qL 15;
-
-    lynx --dump $url=$indice > $indice.txt;
-    cat $indice.txt |  grep "/2017";
-    cat $indice.txt |  grep "/2018";
-
-    rm $indice.txt;
-    done
-}
-
-atualizarindices_mensais;atualizarindices_anuais ${@}
+atualizarindices_mensais ${@}
