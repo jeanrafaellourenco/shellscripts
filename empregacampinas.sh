@@ -27,7 +27,7 @@ ERRO=$(lynx --dump https://empregacampinas.com.br/?s=$BUSCA | grep "Ops. Nada en
 
 # sort -hr - ordena os resultados da vagas da mais recente para a mais antiga, para inverter remova o parâmetro 'r'
 lynx --dump https://empregacampinas.com.br/?s=$BUSCA |
-    grep "https://empregacampinas.com.br/2020/" | awk '{ print $2 }' | sort -hr |
+    grep "https://empregacampinas.com.br/$(date +%Y)/" | awk '{ print $2 }' | sort -hr |
     while read line; do
         echo $line
         sleep 1
@@ -39,7 +39,7 @@ echo -e "\nFim da busca"
 for i in {2..3}; do
     echo -e "\nBuscando na página $i\n"
     lynx --dump https://empregacampinas.com.br/page/$i/?s=$BUSCA |
-        grep "https://empregacampinas.com.br/2020/" | awk '{ print $2 }' | sort -hr |
+        grep "https://empregacampinas.com.br/$(date +%Y)/" | awk '{ print $2 }' | sort -hr |
         while read line; do
             echo $line
             sleep 1
