@@ -48,7 +48,7 @@ dominio=$1
 [[ ! $(which nslookup 2>/dev/null) ]] && echo -e "O programa 'nslookup' não está instalado no momento. Você pode instalá-lo digitando: \nsudo apt install nslookup -y" && exit 1
 
 # Verificar SPF
-verificar_registro "_spf.$dominio" "v=spf1" "Registro SPF encontrado" "Registro SPF não encontrado"
+verificar_registro "$dominio" "v=spf1" "Registro SPF encontrado" "Registro SPF não encontrado"
 
 # Verificar DKIM
 verificar_registro "_adsp._domainkey.$dominio" "canonical name" "Registro DKIM encontrado" "Registro DKIM não encontrado"
