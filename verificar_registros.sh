@@ -18,40 +18,63 @@
 # - Certifique-se de ter permissões adequadas para executar o script.
 ######################################################################################################################
 
-
 # Função para verificar a presença de um registro DNS TXT específico
 verificar_registro() {
- local dominio=$1
- local registro=$2
- local mensagem_sucesso=$3
- local mensagem_falha=$4
+    local dominio=$1
+    local registro=$2
+    local mensagem_sucesso=$3
+    local mensagem_falha=$4
 
- echo -e "\nVerificando $registro para $dominio"
- resultado=$(nslookup -type=TXT $dominio | grep -q "$registro")
+    resultado=$(nslookup -type=TXT "$dominio" | grep -q "$registro")
 
- if [ $? -eq 0 ]; then
-    echo -e "$mensagem_sucesso"
-    nslookup -type=TXT $dominio | grep "$registro"
- else
-    echo -e "$mensagem_falha"
- fi
+    if [ $? -eq 0 ]; then
+        echo -e "$mensagem_sucesso"
+        nslookup -type=TXT "$dominio" | grep "$registro"
+        echo  # Adiciona uma quebra de linha após cada registro encontrado
+        return 0  # Retorna sucesso
+    else
+        return 1  # Retorna falha
+    fi
+}
+
+# Função para verificar DKIM com base em seletores
+verificar_dkim() {
+    local dominio=$1
+    local seletores=("${@:2}")
+    local dkim_encontrado=false
+
+    for sel in "${seletores[@]}"; do
+        if verificar_registro "${sel}._domainkey.${dominio}" "canonical name" "Registro DKIM ($sel) encontrado" "Registro DKIM ($sel) não encontrado"; then
+            dkim_encontrado=true
+        fi
+    done
+
+    if ! $dkim_encontrado; then
+        echo -e "Nenhum registro DKIM encontrado para o domínio $dominio"
+    fi
 }
 
 if [ $# -ne 1 ]; then
- echo "Uso: $0 <domínio>"
- exit 1
+    echo "Uso: $0 <domínio>"
+    exit 1
 fi
 
 dominio=$1
 
 # Verifica se o nslookup está presente
-[[ ! $(which nslookup 2>/dev/null) ]] && echo -e "O programa 'nslookup' não está instalado no momento. Você pode instalá-lo digitando: \nsudo apt install nslookup -y" && exit 1
+if ! which nslookup >/dev/null 2>&1; then
+    echo -e "O programa 'nslookup' não está instalado no momento. Você pode instalá-lo digitando: \nsudo apt install nslookup -y"
+    exit 1
+fi
+
+# Lista de seletores DKIM para testar
+seletores=("amazon" "api" "dkim" "fd" "fd2" "fdm" "google" "k2" "k3" "mandrill" "mimecast" "mxvault" "protonmail13" "s1" "s2" "selector1" "selector2" "tm1" "tm2" "zmail")
 
 # Verificar SPF
 verificar_registro "$dominio" "v=spf1" "Registro SPF encontrado" "Registro SPF não encontrado"
 
 # Verificar DKIM
-verificar_registro "_adsp._domainkey.$dominio" "canonical name" "Registro DKIM encontrado" "Registro DKIM não encontrado"
+verificar_dkim "$dominio" "${seletores[@]}"
 
 # Verificar DMARC
 verificar_registro "_dmarc.$dominio" "v=DMARC" "Registro DMARC encontrado" "Registro DMARC não encontrado"
