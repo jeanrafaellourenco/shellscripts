@@ -33,6 +33,8 @@ verificar_registro() {
         echo  # Adiciona uma quebra de linha após cada registro encontrado
         return 0  # Retorna sucesso
     else
+        echo -e "$mensagem_falha"
+        echo # Adiciona uma quebra de linha após cada registro não encontrado
         return 1  # Retorna falha
     fi
 }
@@ -44,7 +46,7 @@ verificar_dkim() {
     local dkim_encontrado=false
 
     for sel in "${seletores[@]}"; do
-        if verificar_registro "${sel}._domainkey.${dominio}" "canonical name" "Registro DKIM ($sel) encontrado" "Registro DKIM ($sel) não encontrado"; then
+        if verificar_registro "${sel}._domainkey.${dominio}" "canonical name" "Registro DKIM encontrado para o seletor $sel" "Nenhum registro DKIM encontrado para o seletor $sel"; then
             dkim_encontrado=true
         fi
     done
@@ -67,11 +69,11 @@ if ! which nslookup >/dev/null 2>&1; then
     exit 1
 fi
 
-# Lista de seletores DKIM para testar
-seletores=("amazon" "api" "dkim" "fd" "fd2" "fdm" "google" "k2" "k3" "mandrill" "mimecast" "mxvault" "protonmail13" "s1" "s2" "selector1" "selector2" "tm1" "tm2" "zmail")
-
 # Verificar SPF
 verificar_registro "$dominio" "v=spf1" "Registro SPF encontrado" "Registro SPF não encontrado"
+
+# Lista de seletores DKIM para testar
+seletores=("amazon" "api" "dkim" "fd" "fd2" "fdm" "google" "k2" "k3" "mandrill" "mimecast" "mxvault" "protonmail13" "s1" "s2" "selector1" "selector2" "tm1" "tm2" "zmail")
 
 # Verificar DKIM
 verificar_dkim "$dominio" "${seletores[@]}"
